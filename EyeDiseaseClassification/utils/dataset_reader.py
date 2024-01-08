@@ -40,7 +40,7 @@ def load_eye_dataset(images_folder: str) -> List[EyeImage]:
     return eye_dataset
 
 
-def convert_to_dictionary(dataset: List[EyeImage]) -> dict:
+def eye_dataset_to_dictionary(dataset: List[EyeImage]) -> dict:
     """
     :param dataset: A list of EyeImage instances
     :type dataset: List[EyeImage]
