@@ -1,5 +1,9 @@
+from typing import Optional, List
+
 import tensorflow as tf
 import matplotlib.pyplot as plt
+from keras.src.callbacks import History
+from keras.src.metrics import Metric
 
 
 def create_image_datasets(directory: str,
@@ -116,34 +120,28 @@ def display_batch_of_images(dataset: tf.data.Dataset
             plt.axis("off")
 
 
-def plot_accuracy_metrics(model_history: History, fig_size: tuple = (14, 6)) -> None:
+def plot_model_history_metrics(history: History,
+                               metrics_to_display: Optional[List[Metric]] = None) -> None:
     """
-    :param model_history: Sequence Model History (Accuracy Metrics)
-    :type model_history: History
+    Plots the specified evaluation metrics from the Keras training history.
 
-    :param fig_size: Figure Dimensions for Display
-    :type fig_size: tuple
-
-    :return: None
+    :param history: Keras History object from a training run.
+    :param metrics_to_display: Optional list of Keras metrics to display.
+                               If None, all metrics in history are plotted.
     """
-    legend_labels = ['Training', 'Validation']
-    title_template = 'Training Dataset vs. Validation Dataset ({})'
+    if metrics_to_display is None:
+        # If no specific metrics are provided, plot all metrics in history
+        metrics_to_display = list(history.history.keys())
 
-    _, (accuracy_axes, loss_axes) = plt.subplots(1, 2, figsize=fig_size)
+    plt.figure(figsize=(12, 6))
 
-    accuracy_axes.set_title(title_template.format('Accuracy'))
-    accuracy_axes.set_xlabel('Epoch')
-    accuracy_axes.set_ylabel('Accuracy')
-    accuracy_axes.plot(model_history['loss'], label=legend_labels[0])
-    accuracy_axes.plot(model_history['val_loss'], label=legend_labels[1])
-    accuracy_axes.legend(legend_labels)
+    for metric in metrics_to_display:
+        if metric.name in history.history:
+            plt.plot(history.epoch, history.history[metric.name], label=metric.name)
 
-    loss_axes.set_title(title_template.format('Loss'))
-    loss_axes.set_xlabel('Epoch')
-    loss_axes.set_ylabel('Loss')
-    loss_axes.plot(model_history['loss'], label=legend_labels[0])
-    loss_axes.plot(model_history['val_loss'], label=legend_labels[1])
-    loss_axes.legend(legend_labels)
-
-    plt.tight_layout()
+    plt.title('Training Metrics')
+    plt.xlabel('Epochs')
+    plt.ylabel('Value')
+    plt.legend()
+    plt.grid(True)
     plt.show()
