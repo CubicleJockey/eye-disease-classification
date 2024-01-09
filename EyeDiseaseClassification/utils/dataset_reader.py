@@ -48,11 +48,11 @@ def eye_dataset_to_dictionary(dataset: List[EyeImage]) -> dict:
     :return: Dictionary version of the list of EyeImages
     """
     eye_dataset_as_dict = {
-        'image_path': list(),
+        'image-path': list(),
         'image-label': list()
     }
     for eye_image in dataset:
-        eye_dataset_as_dict['image_path'].append(eye_image.path)
+        eye_dataset_as_dict['image-path'].append(eye_image.path)
         eye_dataset_as_dict['image-label'].append(eye_image.label)
 
     return eye_dataset_as_dict
