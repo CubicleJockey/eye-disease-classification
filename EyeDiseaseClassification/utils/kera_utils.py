@@ -82,6 +82,9 @@ def display_batch_of_images(dataset: tf.data.Dataset
     """
     Displays a batch of images in a grid format.
 
+    :param class_names: Classification labels based on folders.
+    :type class_names: list[str]
+
     :param dataset: A TensorFlow Dataset object containing image batches.
     :type dataset: tf.data.Dataset
 
