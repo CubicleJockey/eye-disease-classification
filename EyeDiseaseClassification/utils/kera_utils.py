@@ -114,3 +114,36 @@ def display_batch_of_images(dataset: tf.data.Dataset
             label_index = labels[i].numpy().argmax()
             plt.title(class_names[label_index])
             plt.axis("off")
+
+
+def plot_accuracy_metrics(model_history: History, fig_size: tuple = (14, 6)) -> None:
+    """
+    :param model_history: Sequence Model History (Accuracy Metrics)
+    :type model_history: History
+
+    :param fig_size: Figure Dimensions for Display
+    :type fig_size: tuple
+
+    :return: None
+    """
+    legend_labels = ['Training', 'Validation']
+    title_template = 'Training Dataset vs. Validation Dataset ({})'
+
+    _, (accuracy_axes, loss_axes) = plt.subplots(1, 2, figsize=fig_size)
+
+    accuracy_axes.set_title(title_template.format('Accuracy'))
+    accuracy_axes.set_xlabel('Epoch')
+    accuracy_axes.set_ylabel('Accuracy')
+    accuracy_axes.plot(model_history['loss'], label=legend_labels[0])
+    accuracy_axes.plot(model_history['val_loss'], label=legend_labels[1])
+    accuracy_axes.legend(legend_labels)
+
+    loss_axes.set_title(title_template.format('Loss'))
+    loss_axes.set_xlabel('Epoch')
+    loss_axes.set_ylabel('Loss')
+    loss_axes.plot(model_history['loss'], label=legend_labels[0])
+    loss_axes.plot(model_history['val_loss'], label=legend_labels[1])
+    loss_axes.legend(legend_labels)
+
+    plt.tight_layout()
+    plt.show()
